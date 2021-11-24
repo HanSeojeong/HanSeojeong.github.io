@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .lotto-list {
+        display: flex;
+      }
+      .lotto-number {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: goldenrod;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+      }
+      .lotto-number:nth-child(6) {
+        background-color: silver;
+      }
+      .lotto-number:nth-child(1),
+      .lotto-number:nth-child(3),
+      .lotto-number:nth-child(5) {
+        background: rgb(255, 170, 170);
+      }
+    </style>
+  </head>
+  <body>
+    <button onclick="printNum()">랜덤</button>
+    <span id="random-num"></span>
+    <div class="lotto-list">
+      <div class="lotto-number">0</div>
+      <div class="lotto-number">0</div>
+      <div class="lotto-number">0</div>
+      <div class="lotto-number">0</div>
+      <div class="lotto-number">0</div>
+      <div class="lotto-number">0</div>
+    </div>
+    <script>
+      const getRandom = () => {
+        //0~9 는 random에 10 곱함 floor 소수점아래 버리기
+        // 1~10은 1을 더함
+        // const random = Math.random() * 10;
+        // console.log(Math.floor(random) + 1);
+
+        //0~45미만 45를 곱한다.
+        //0~44 까지 정수 소수를 버린다
+        //1~45까지의 정수 1을더한다.
+        const random = Math.random() * 45;
+        const result = Math.floor(random) + 1;
+        // console.log(Math.floor(random) + 1);
+        //console.log(result);
+        return result;
+      };
+      //   const num = getRandom();
+      //   getRandom();
+      const printNum = () => {
+        const $span = document.getElementById("random-num");
+        //$span.innerHTML = getRandom();
+
+        // 6개의 숫자를 담을 빈배열 선언
+        const numberList = [];
+        for (let i = 0; i < 6; i++) {
+          //배열에 랜덤숫자 삽입
+          // numberList.push(getRandom());
+          let num = getRandom();
+
+          //num이 numberList배열과 중복되면 다시 새로운 랜덤값을 넣는다.
+          //numberList.includes(num); numberList에 num값이 있는지 확인하는 include함수- 있으면 true
+          //1.isOld값 할당하기
+          let isOld = numberList.includes(num);
+
+          while (isOld) {
+            num = getRandom();
+            isOld = numberList.includes(num);
+          }
+          //2.includes값 자체로 판별하기
+          while (numberList.includes(num)) {
+            num = getRandom();
+          }
+          numberList.push(num);
+        }
+        // console.log(numberList);
+        // console.log(numberList);
+        console.log(numberList.sort((a, b) => a - b));
+
+        const sortedList = numberList.sort((a, b) => a - b);
+        //$span.innerHTML = sortedList.join(" ");
+        for (let i = 0; i < 6; i++) {
+          const $number = document.getElementsByClassName("lotto-number")[i];
+          $number.innerHTML = sortedList[i];
+        }
+      };
+    </script>
+  </body>
+</html>
